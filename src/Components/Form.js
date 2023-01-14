@@ -1,8 +1,35 @@
 import React from 'react'
 import { useState } from "react";
 
-function Form () {
-    const [name, setName] = useState("")
+const Form = () => { 
+  const [employeesData, setEmployeesData] = useState({
+    name: "",
+    occupation: "",
+    callMobile: "",
+    callOffice:"",
+    sms: "",
+    email: "",
+    image:"",
+  });
+
+function handleChange(event) {
+  const updatedUserData = {
+    ...employeesData, [event.target.name]: event.target.value,
+  };
+
+  setEmployeesData(updatedUserData);
+}
+function handleSubmit(event){
+  event.preventDefault();
+  fetch("https://lit-dusk-21328.herokuapp.com/api/employees/addemployee", {
+method: "POST",
+body: JSON.stringify(employeesData),
+headers: {
+  "Content-Type": "application/json",
+},
+  });
+}
+    /*const [name, setName] = useState("")
     const [imageUrl, setImageUrl] = useState("")
     const [occupation, setOccupation] = useState("")
     const [mobileNumber, setMobileNumber] = useState("")
@@ -30,30 +57,28 @@ const handleSms = (event) => {
 };
 const handleEmailAddress= (event) => {
   setEmailAddress(event.target.value)
-};
+};*/
 
-const handleClick = () => {
 
-}
   return (
     <div>
-    <div>Form to Add Employee Details</div>
-    <form >
-    <input className="input" type ="text" value = {name} placeholder= "Name of the employee" onChange = {handleName} />
+    <h4 style = {{ textAlign: "center",}}>Form to Add Employee Details</h4>
+    <form  onSubmit = {handleSubmit}>
+    <input className="input" type ="text" name = 'name' placeholder= "Name of the employee" onChange = {handleChange} />
     <br/>
-    <input className="input"type ="text" value = {imageUrl} placeholder= "Image url" onChange = {handleImageUrl} />
+    <input className="input"type ="text" name = 'image' placeholder= "Image url" onChange = {handleChange} />
     <br/>
-    <input className="input" type ="text" value = {occupation} placeholder= "Occupation" onChange = {handleOccupation} />
+    <input className="input" type ="text" name = 'occupation' placeholder= "Occupation" onChange = {handleChange} />
     <br/>
-    <input className="input" type ="text" value = {mobileNumber} placeholder= "Office Mobile No." onChange = {handleMobileNumber} />
+    <input className="input" type ="number" name = 'callOffice' placeholder= "Office Mobile No." onChange = {handleChange} />
     <br/>
-    <input className="input" type ="text" value = {cellPhone} placeholder= "Cell-Phone No." onChange = {handleCellPhone} />
+    <input className="input" type ="number" name= 'callMobile' placeholder= "Cell-Phone No." onChange = {handleChange} />
     <br/>
-    <input className="input" type ="text" value = {sms} placeholder= "SMS" onChange = {handleSms} />
+    <input className="input" type ="number" name = 'sms' placeholder= "SMS" onChange = {handleChange} />
     <br/>
-    <input className="input" type ="text" value = {emailAddress} placeholder= "Email Address" onChange = {handleEmailAddress} />
+    <input className="input" type ="emailAddress" name = 'email' placeholder= "Email Address" onChange = {handleChange} />
     <br/>
-    <button className="input" onClick={handleClick} style= {{ backgroundColor: 'blue', color: 'white'}}>Submit</button>
+    <button className="input" style= {{ backgroundColor: 'blue', color: 'white'}}>Submit</button>
     </form>
     </div>
   )
